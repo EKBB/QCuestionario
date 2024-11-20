@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import { registerUsers } from "../../controllers/UserControler";
+import { registerUsers } from "./controllers/UserControler";
 
 
 const app: Application = express();
