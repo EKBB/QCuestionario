@@ -52,10 +52,29 @@ export const registerUsers= async (req: Request, res: Response,): Promise<any> =
     }
 }
 
-export const singin = async (req:Request, res:Response):Promise<void>=>{
+export const singin = async (req:Request, res:Response):Promise<any>=>{
     //correo y contraseña
     //verificar que el usuario existe
-    const user = await UserModel.findOne({email:req.body.email, password:req.body.passwordl} )
-    //si no existe devuelven error
-    //si existe devuelven token
+    try{
+        const user = await UserModel.findOne({email:req.body.email, password:req.body.password} )
+
+        if(!user){
+             //si no existe devuelven error
+            return res.status(400).json({
+                msg: "No existe usuario"
+            })
+        }
+              //si existe devuelven token
+        const token = jwt.sign(JSON.stringify(user),"pocoyo");
+
+        return res.status(200).json({
+            msg: "Usuario existe",
+            token
+        })
+
+    }catch(error){
+        return res.status(500).json({
+            msg: "Hubo un error ingresar el usuario"
+        })
+    }
 }
