@@ -69,7 +69,7 @@ export const singin = async (req:Request, res:Response):Promise<any>=>{
 
         return res.status(200).json({
             msg: "Usuario existe",
-            token
+            token, user
         })
 
     }catch(error){

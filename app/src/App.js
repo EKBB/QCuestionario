@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import axios from "axios"
 
 
@@ -19,9 +19,11 @@ const App = () => {
     const onSubmit = async () => {
       /* Enviar data al server */
       try {
-          data.rol="client"
-         await axios.post("http://localhost:4000/users/login", data) 
-         navigate("/list-users")
+        const res = await axios.post("http://localhost:4000/users/login", data) 
+         navigate("/list-q")
+        const user = res.data.user;
+        user.logined= true; 
+        localStorage.user = JSON.stringify(user)
          alert("Inicio de sesion Correcto")
       } catch (error) {
          alert("Usuario o Contraseña incorrecta")
