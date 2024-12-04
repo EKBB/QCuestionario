@@ -24,6 +24,11 @@ const App = () => {
         const user = res.data.user;
         user.logined= true; 
         localStorage.user = JSON.stringify(user)
+        if(user.rol == "administrator"){
+          navigate("/home")
+        }else{
+          navigate("/list-q")
+        }   
          alert("Inicio de sesion Correcto")
       } catch (error) {
          alert("Usuario o Contraseña incorrecta")
