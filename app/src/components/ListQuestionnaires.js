@@ -21,11 +21,22 @@ export const ListQuestionnaires = ({ rol }) => {
         }
     }
 
+    const deleteData = async (_id) => {
+        try {
+            const data= {_id:_id}
+            await axios.delete("http://localhost:4000/questionnaires/deleteQuestionnaire", {data})
+            getData()
+        } catch (error) {
+            console.log(error)
+            alert("Hubo un error al borrar el questionario")
+        }
+    }
+
     return (
         <Container>
             <Row>
                 {
-                    questionnaires.map(({ name, description }, i) => (
+                    questionnaires.map(({ _id, name, description }, i) => (
                         <Col>
                             <Card style={{ width: "15rem" }} className='mb-3'>
                                 <Card.Body>
@@ -45,7 +56,7 @@ export const ListQuestionnaires = ({ rol }) => {
                                                     <Dropdown variant="outline-primary">
                                                         <Dropdown.Toggle></Dropdown.Toggle>
                                                         <Dropdown.Menu>
-                                                            <Dropdown.Item>Eliminar</Dropdown.Item>
+                                                            <Dropdown.Item onClick={() => deleteData(_id)}>Eliminar</Dropdown.Item>
                                                             <Dropdown.Item>Editar</Dropdown.Item>
                                                         </Dropdown.Menu>
                                                     </Dropdown>

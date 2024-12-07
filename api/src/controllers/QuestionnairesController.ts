@@ -69,31 +69,6 @@ export const registerQuestionnaires= async (req: Request, res: Response,): Promi
     }
 }
 
-export const searchQuestionnaire = async (req:Request, res:Response):Promise<any>=>{
-    //verificar que el questionario existe
-    try{
-        const questionnaire = await questionnaireModel.findOne({title:req.body.title, userId:req.body.userId} )
-
-        if(!questionnaire){
-             //si no existe devuelven error
-            return res.status(400).json({
-                msg: "No existe cuestionario"
-            })
-        }
-              //si existe devuelven token
-
-        return res.status(200).json({
-            msg: "Questionario existe",
-            questionnaire
-        })
-
-    }catch(error){
-        return res.status(500).json({
-            msg: "Hubo un error al obtener el questionario"
-        })
-    }
-}
-
 export const getMetrics = async (req:Request, res:Response): Promise<void>=>{
     try {
         const numberUsers = await UserModel.find({rol:"client"}).countDocuments()
@@ -125,5 +100,21 @@ export const getQuestionnaires = async (req:Request, res:Response): Promise<void
             msg: "Hubo un error al obtener los questionarios"
         })
         return
+    }
+}
+
+export const deleteQuestionnaires = async (req:Request, res:Response): Promise<any>=>{
+    try {
+    
+        const deleteQuestions = await QuestionModel.deleteMany({questionnaireId: req.body._id})
+        const deleteQuestionnaire = await questionnaireModel.findByIdAndDelete({_id:req.body._id})
+
+        return res.status(200).json({
+            msg: "Questionario eliminado con exito", deleteQuestionnaire, deleteQuestions
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Hubo un error al intentar eliminar el questionario"
+        })
     }
 }
